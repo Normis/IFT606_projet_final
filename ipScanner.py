@@ -16,9 +16,10 @@ class IpScanner:
     def __init__(self, ipRange):
         self.ipRange = ipRange
     def __init__ (self):
-        self.ipRange = '192.168.0'
+        self.ipRange = '192.168.0' #Pour ne rien faire sinon sa prend un constructeur par default
 
     def scan(self):
+        self.listAlive = []
         devnull = open(os.devnull, 'wb')
         processToDo = []
         #on scan les IP du range donner de 1 a 255
