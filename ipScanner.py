@@ -28,7 +28,7 @@ class IpScanner:
             #remplie une list de subprocess a executer avec la commande ping
             processToDo.append((ip, Popen(['ping', '-c', '3', ip], stdout=devnull,stderr=devnull)))
         while processToDo:
-            for i, (ip, proc) in enumerate(processToDo[:]):
+            for i, (ip, proc) in enumerate(processToDo):
                 if proc.poll() is not None: # ping finished
                     #si le ping a repondu avec un code sans erreur on sais que l'IP est up 
                     #si il y a erreure on assume que l'IP n'est pas bon
