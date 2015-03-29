@@ -3,21 +3,29 @@ import sys
 
 def main():
     print 'by default the scanner will scan 192.168.0'
+    args = sys.argv
+    interactive = False
     ip = ''
+    if '-i' in args:
+        interactive = True;
+        args.remove('-i')
     scanner = None
-    #try:
-        #ip = sys.argv[1]
-    #    scanner = IpScanner()
-    #    None
-    #except: 
-        #scanner = IpScanner()
-    scanner = IpScanner()                
+    
+    try:
+        ip = args[1]
+        scanner = IpScanner(ip)
+    except: 
+        scanner = IpScanner()
     targetlist = scanner.scan()
 
     attacklist = []
     #who to target? 
-    if '-i' in sys.argv:
+    if interactive:
         while True:
+            if targetlist == []:
+                print 'target list empty'
+                break
+
             print 'get the os for the specified IP addresse, write next to go to next step.'    
             print targetlist            
             ip = raw_input()
