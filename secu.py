@@ -12,7 +12,7 @@ def main():
         args.remove('-i')
     scanner = None
     
-    routerIP = sys.argv[1]
+    routerIP = args[1]
 
     try:
         ip = args[2]
