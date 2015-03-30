@@ -1,5 +1,6 @@
 from ipScanner import IpScanner
 from arpPoison import ArpPoison
+from subprocess import Popen
 import sys
 
 def main():
@@ -53,11 +54,14 @@ def main():
         
     stopList = []
     for i in attacklist:
-        ArpPoison(routerIP, i)
+        devnull = open(os.devnull, 'wb')
+        stoplost.append(Popen(['python', 'poisonProcess.py', routerIP, i], stdout=devnull,stderr=devnull))
 
     while True:
         answer = raw_input()
         if answer == 'stop':
+            for i in stoplost:
+                i.kill()
             break
 
     #launch atttackkk! 
