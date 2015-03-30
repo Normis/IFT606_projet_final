@@ -9,7 +9,7 @@ import sys
 import logging
 import time
 
-class arpPoison: 
+class ArpPoison: 
     def __init__(self, routerIp, victimIp):
         logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
         #sudo check 
