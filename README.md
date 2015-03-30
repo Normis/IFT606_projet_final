@@ -2,11 +2,11 @@
 Projet final du cours dans le cadre du cours IFT606
 
 ## Attaque ARP-POISONING
-* Script: arp.py
+* Script: mitm.py
 * Language: python
-* Description: Envoi des requêtes ARP vers la victime pour modifier son registre ARP 
-* Résultat: Tous les paquets de la victime passe maintenant par l'ordinateur de l'attaquant et la victime n'est plus en mesure d'accèder au réseau
-* Usage: python arp.py -v 192.168.0.5 -r 192.168.0.1
+* Description: Envoi des requêtes ARP vers les victimes pour modifier son registre ARP
+* Résultat: Tous les paquets des victimes passe maintenant par l'ordinateur de l'attaquant.
+* Usage: python mitm.py -h
 
 ## Affichage d'une fausse page web
 * Script: start.sh

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROXY_IP='192.168.1.108'
+PROXY_IP='192.168.0.195'
 
 # demarer le serveur web apache pour les pages web
 # le répertoire web se trouve sous /var/www/
