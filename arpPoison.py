@@ -9,14 +9,18 @@ import sys
 import logging
 import time
 
-class arpPoison: 
+class ArpPoison: 
     def __init__(self, routerIp, victimIp):
+        self.routerIP = routerIp
+        self.victimIP = victimIp
+        self.thread = threading.Thread(target = self.play)
+        self.thread.start()
+
+    def play(self):
         logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
         #sudo check 
         if os.geteuid() != 0:
             sys.exit("[!] Please run as root")
-        self.routerIP = routerIp
-        self.victimIP = victimIp
         self.routerMAC = self.MAC_Original(self.routerIP)
         self.victimMAC = self.MAC_Original(self.victimIP)
 

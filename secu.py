@@ -53,21 +53,12 @@ def main():
         
     stopList = []
     for i in attacklist:
-        t = threading.Thread(target=worker,args=(i,routerIP,stopList))
-        t.start()
+        ArpPoison(routerIP, i)
 
     while True:
         answer = raw_input()
         if answer == 'stop':
             break
-
-
-
-def worker(ipVictim, ipAttack, stopList):
-    l = threading.Lock()
-    l.lock()
-    stopList.append(ArpPoison(ipAttack, ipVictim))
-    l.release()
 
     #launch atttackkk! 
 if __name__ == "__main__":
