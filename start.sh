@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROXY_IP='192.168.0.195'
+PROXY_IP='192.168.1.195'
 
 # demarer le serveur web apache pour les pages web
 # le répertoire web se trouve sous /var/www/
@@ -15,3 +15,6 @@ iptables -t nat --append POSTROUTING --out-interface eth0 -j MASQUERADE
 # Forward les paquets sur le port 80 vers notre serveur
 echo "SENDING ALL WEBPAGE TO : $PROXY_IP"
 iptables -t nat -A PREROUTING -p tcp --dport 80 --jump DNAT --to-destination $PROXY_IP
+
+# Forward les paquets sur le port 443 vers notre serveur
+iptables -t nat -A PREROUTING -p tcp --dport 443 --jump DNAT --to-destination $PROXY_IP

