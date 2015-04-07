@@ -1,9 +1,19 @@
 #!/bin/bash
 
-PROXY_IP='192.168.1.195'
+PROXY_IP=$1
 
 # demarer le serveur web apache pour les pages web
 # le répertoire web se trouve sous /var/www/
+#
+# Dans les configuration apache(/etc/apache2/apache2.conf:
+#
+#<Directory /var/www/>
+#    Options Indexes FollowSymLinks
+#    ...
+#    FallbackResource /index.html  <-Cette ligne doit être ajoutée
+#</Directory>
+
+
 /etc/init.d/apache2 start
 
 #configurer la table IP
@@ -18,3 +28,4 @@ iptables -t nat -A PREROUTING -p tcp --dport 80 --jump DNAT --to-destination $PR
 
 # Forward les paquets sur le port 443 vers notre serveur
 iptables -t nat -A PREROUTING -p tcp --dport 443 --jump DNAT --to-destination $PROXY_IP
+
