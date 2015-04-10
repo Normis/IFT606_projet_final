@@ -13,13 +13,16 @@ import sys
 def main():
     #argument parsing
     parser = argparse.ArgumentParser()
-    parser.add_argument("-i", "--interactive", help= "manually chose targets", action="store_true")
+    parser.add_argument("-i", "--interactive", help= "manually choose targets", action="store_true")
     parser.add_argument("-m", "--myIp", help="Manually specify your IP if not able to automatically get it")
     parser.add_argument("-n", "--netiface", help="Specify the interface to use by default wlan0", default="wlan0")
     parser.add_argument("-r", "--routerIP", help="Specify default IP for the router if not able to automatically find it")
-    parser.add_argument("-s", "--scan", help= "By default scan on 192.168.0", default="192.168.0")
+    parser.add_argument("-x", "--ignoreHttp", help= "Don't redirect paquet from port 80 to the local webserver", action="store_true")
+    parser.add_argument("-y", "--ignoreHttps", help= "Don't redirect paquet from port 443 to the local webserver", action="store_true")
+
     args = parser.parse_args()
 
+    myNetiface = args.netiface
     if geteuid() != 0:
         sys.exit("[!] Please run as root")
 
@@ -28,7 +31,7 @@ def main():
         #s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         #s.connect(("8.8.8.8", 80))
         #myIp = s.getsockname()[0]
-        myIp = netifaces.ifaddresses(args.netiface)[netifaces.AF_INET][0]["addr"]
+        myIp = netifaces.ifaddresses(myNetiface)[netifaces.AF_INET][0]["addr"]
     else:
         myIp = args.myIp
     print "Your IP is: ", myIp
@@ -40,7 +43,12 @@ def main():
         routerIP = args.routerIP
     print "Router IP is: ", routerIP
 
-    scanner = IpScanner(args.scan)
+    try:
+        scanRange = routerIP[0:routerIP.rindex(".")]
+    except ValueError:
+        scanRange = "192.168.0"
+
+    scanner = IpScanner(scanRange)
     targetlist = scanner.scan()
 
     try:
@@ -62,7 +70,7 @@ def main():
                 break
 
             print 'Get the os for the specified IP addresse, write "next" to go to next step.'
-            print 'Chose an IP: '
+            print 'Chose an IP:'
             print targetlist
             ip = raw_input()
             if ip.lower() == 'next':
@@ -82,8 +90,12 @@ def main():
         #interaction avec usager pour les targets
 
     print attacklist
+    print "######",args.ignoreHttp
+    print "*****",args.ignoreHttps
+    use80 = "0" if args.ignoreHttp else "1"
+    use443 = "0" if args.ignoreHttps else "1"
 
-    subprocess.call(["./start.sh", myIp])
+    subprocess.call(["./start.sh", myIp, myNetiface, use80, use443])
 
     print 'To stop the attack you must press <ENTER>.'
     initIpFwd()
