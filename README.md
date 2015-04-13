@@ -6,8 +6,6 @@ Projet final du cours dans le cadre du cours IFT606
 * Language: python
 * Description: Envoi des requêtes ARP vers les victimes pour modifier son registre ARP
 * Résultat: Tous les paquets des victimes passe maintenant par l'ordinateur de l'attaquant.
-* Usage: python mitm.py -h
-* 
 
 ```
 usage: mitm.py [-h] [-i] [-m MYIP] [-n NETIFACE] [-r ROUTERIP] [-x] [-y]
@@ -28,11 +26,5 @@ optional arguments:
                         webserver
 ```
 
-
-## Affichage d'une fausse page web
-* Script: start.sh
-* Language: batch
-* Description: Démarre un serveur apache et modifie la table de routing
-* Résultat: La victime tombe sur notre faux site web
 
 
