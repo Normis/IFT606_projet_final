@@ -9,6 +9,7 @@ Projet final du cours dans le cadre du cours IFT606
 * Usage: python mitm.py -h
 * 
 
+```
 usage: mitm.py [-h] [-i] [-m MYIP] [-n NETIFACE] [-r ROUTERIP] [-x] [-y]
 
 optional arguments:
@@ -25,7 +26,7 @@ optional arguments:
                         webserver
   -y, --ignoreHttps     Don't redirect paquet from port 443 to the local
                         webserver
-
+```
 
 
 ## Affichage d'une fausse page web
